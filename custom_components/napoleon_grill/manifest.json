@@ -1,0 +1,13 @@
+{
+  "domain": "napoleon_grill",
+  "name": "Napoleon Grill",
+  "codeowners": ["@m-a-johnson"],
+  "config_flow": true,
+  "documentation": "https://github.com/m-a-johnson/napoleon-grill",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/m-a-johnson/napoleon-grill/issues",
+  "quality_scale": "custom",
+  "requirements": ["ayla-iot-unofficial==1.5.0"],
+  "version": "0.1.0"
+}
