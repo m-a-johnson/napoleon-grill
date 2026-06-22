@@ -18,6 +18,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import (
     DOMAIN,
     MANUFACTURER,
+    PROP_DEVICE_NAME,
     PROP_PROBE_ONE_TEMP,
     PROP_PROBE_TWO_TEMP,
     PROP_PROBE_THREE_TEMP,
@@ -89,11 +90,12 @@ async def async_setup_entry(
 
     entities = []
     for device in coordinator.devices:
+        device_data = coordinator.data.get(device.serial_number, {})
         for description in SENSOR_DESCRIPTIONS:
-            entities.append(
-                NapoleonGrillSensor(coordinator, device.serial_number, description)
-            )
-
+            if description.key in device_data:
+                entities.append(
+                    NapoleonGrillSensor(coordinator, device.serial_number, description)
+                )
     async_add_entities(entities)
 
 
@@ -111,13 +113,13 @@ class NapoleonGrillSensor(CoordinatorEntity, SensorEntity): # type: ignore[misc]
         self.entity_description = description
         self._serial_number = serial_number
         self._attr_unique_id = f"{serial_number}_{description.key}"
+        device_data = coordinator.data.get(serial_number, {})
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, serial_number)},
             manufacturer=MANUFACTURER,
-            name=f"Napoleon Grill {serial_number}",
-            sw_version=coordinator.data.get(serial_number, {}).get(PROP_VERSION),
+            name=device_data.get(PROP_DEVICE_NAME) or f"Napoleon Grill {serial_number}",
+            sw_version=device_data.get(PROP_VERSION),
         )
-
     @property
     def native_value(self) -> float | int | str | Decimal | None: # type: ignore[override]
         """Return the state of the sensor."""
