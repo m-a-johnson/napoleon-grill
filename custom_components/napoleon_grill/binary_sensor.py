@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.const import EntityCategory
 
 from .const import (
     DOMAIN,
@@ -47,6 +48,7 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
         key=PROP_LCD_OFF,
         name="Display Off",
+        entity_registry_enabled_default=False,
     ),
 )
 

@@ -9,7 +9,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature,  EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -63,6 +63,7 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         key=PROP_BURNER_LEVEL,
         name="Burner Level",
         state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=PROP_RSSI,
@@ -70,12 +71,14 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.SIGNAL_STRENGTH,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="dBm",
+        entity_category=EntityCategory.DIAGNOSTIC,
     ),
     SensorEntityDescription(
         key=PROP_TANK_WEIGHT,
         name="Tank Weight",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="g",
+        entity_registry_enabled_default=False,
     ),
 )
 
