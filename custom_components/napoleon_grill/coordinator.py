@@ -43,6 +43,7 @@ class NapoleonGrillCoordinator(DataUpdateCoordinator):
         )
         self.devices: list[Device] = []
 
+        
     async def _async_update_data(self) -> dict:
         """Fetch data from Napoleon Grill API."""
         try:
@@ -57,7 +58,17 @@ class NapoleonGrillCoordinator(DataUpdateCoordinator):
 
             return data
 
-        except AylaAuthError as err:
-            raise ConfigEntryAuthFailed("Authentication failed") from err
+        except AylaAuthError:
+            _LOGGER.debug("Auth token expired, re-authenticating")
+            try:
+                await self.api.async_sign_in()
+                self.devices = await self.api.async_get_devices()
+                data = {}
+                for device in self.devices:
+                    await device.async_update()
+                    data[device.serial_number] = device.property_values
+                return data
+            except AylaAuthError as err:
+                raise ConfigEntryAuthFailed("Authentication failed") from err
         except Exception as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
