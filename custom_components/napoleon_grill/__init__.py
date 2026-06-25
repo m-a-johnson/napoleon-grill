@@ -8,8 +8,13 @@ from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 from .coordinator import NapoleonGrillCoordinator
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
-
+PLATFORMS: list[Platform] = [
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.SELECT,
+    Platform.NUMBER,
+    Platform.TEXT,
+]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Napoleon Grill from a config entry."""
