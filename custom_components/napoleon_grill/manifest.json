@@ -9,5 +9,5 @@
   "issue_tracker": "https://github.com/m-a-johnson/napoleon-grill/issues",
   "quality_scale": "custom",
   "requirements": ["ayla-iot-unofficial==1.5.0"],
-  "version": "0.2.0"
+  "version": "0.2.1"
 }
