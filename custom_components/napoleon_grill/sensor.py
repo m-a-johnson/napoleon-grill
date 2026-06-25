@@ -23,6 +23,10 @@ from .const import (
     PROP_PROBE_TWO_TEMP,
     PROP_PROBE_THREE_TEMP,
     PROP_PROBE_FOUR_TEMP,
+    PROP_PROBE_ONE_NAME,
+    PROP_PROBE_TWO_NAME,
+    PROP_PROBE_THREE_NAME,
+    PROP_PROBE_FOUR_NAME,
     PROP_BURNER_LEVEL,
     PROP_RSSI,
     PROP_TANK_WEIGHT,
@@ -52,9 +56,9 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
-    SensorEntityDescription(
+ SensorEntityDescription(
         key=PROP_PROBE_FOUR_TEMP,
-        name="Probe 4 Temperature",
+        name="Grill Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -78,6 +82,26 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         name="Tank Weight",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement="g",
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=PROP_PROBE_ONE_NAME,
+        name="Probe 1 Name",
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=PROP_PROBE_TWO_NAME,
+        name="Probe 2 Name",
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=PROP_PROBE_THREE_NAME,
+        name="Probe 3 Name",
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=PROP_PROBE_FOUR_NAME,
+        name="Grill Name",
         entity_registry_enabled_default=False,
     ),
 )

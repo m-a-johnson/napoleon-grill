@@ -103,14 +103,6 @@ Napoleon uses the [Ayla Networks](https://www.aylanetworks.com/) IoT platform. T
 | Entity | Type | Description |
 |--------|------|-------------|
 | LED Brightness | Select | Control display brightness (Low / Medium / High) |
-| Probe 1 Target Low | Number | Lower target temperature for probe 1 |
-| Probe 1 Target High | Number | Upper target temperature for probe 1 |
-| Probe 2 Target Low | Number | Lower target temperature for probe 2 |
-| Probe 2 Target High | Number | Upper target temperature for probe 2 |
-| Probe 3 Target Low | Number | Lower target temperature for probe 3 |
-| Probe 3 Target High | Number | Upper target temperature for probe 3 |
-| Probe 4 Target Low | Number | Lower target temperature for probe 4 |
-| Probe 4 Target High | Number | Upper target temperature for probe 4 |
 | Probe 1 Name | Text | Rename probe 1 from HA |
 | Probe 2 Name | Text | Rename probe 2 from HA |
 | Probe 3 Name | Text | Rename probe 3 from HA |
@@ -120,6 +112,7 @@ Napoleon uses the [Ayla Networks](https://www.aylanetworks.com/) IoT platform. T
 | Probe 3 Cook Preset | Text | Cook preset label for probe 3 |
 | Probe 4 Cook Preset | Text | Cook preset label for probe 4 |
 
+> **Note:** Target temperature alerts are intentionally not implemented in this integration. Use Home Assistant automations and notifications to alert when probe temperatures reach your desired values — this gives you more flexibility than the Napoleon app's built-in alert system.
 ### Temperature Units
 
 All probe temperatures are stored internally in **Celsius** (as returned by the API). You can change the display unit per entity in Home Assistant under **Settings → Devices & Services → Napoleon Grill → [entity] → Unit of Measurement**. This allows you to display cooking probes in Fahrenheit while keeping ambient sensors in Celsius.
@@ -146,7 +139,6 @@ If you use Pi-hole, AdGuard, or similar DNS filtering, add `ads-field.aylanetwor
 ## Roadmap
 
 - [x] LED brightness select entity (High / Medium / Low) — v0.2.0
-- [x] Target temperature numbers per probe — v0.2.0
 - [x] Probe name text entities — v0.2.0
 - [x] Cook preset name text entities — v0.2.0
 - [ ] Temperature alerts per probe
