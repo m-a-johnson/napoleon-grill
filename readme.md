@@ -98,6 +98,28 @@ Napoleon uses the [Ayla Networks](https://www.aylanetworks.com/) IoT platform. T
 | Grill Active | Whether the grill is currently running | Enabled |
 | Display Off | Whether the grill's LCD display is off | Hidden |
 
+### Controls
+
+| Entity | Type | Description |
+|--------|------|-------------|
+| LED Brightness | Select | Control display brightness (Low / Medium / High) |
+| Probe 1 Target Low | Number | Lower target temperature for probe 1 |
+| Probe 1 Target High | Number | Upper target temperature for probe 1 |
+| Probe 2 Target Low | Number | Lower target temperature for probe 2 |
+| Probe 2 Target High | Number | Upper target temperature for probe 2 |
+| Probe 3 Target Low | Number | Lower target temperature for probe 3 |
+| Probe 3 Target High | Number | Upper target temperature for probe 3 |
+| Probe 4 Target Low | Number | Lower target temperature for probe 4 |
+| Probe 4 Target High | Number | Upper target temperature for probe 4 |
+| Probe 1 Name | Text | Rename probe 1 from HA |
+| Probe 2 Name | Text | Rename probe 2 from HA |
+| Probe 3 Name | Text | Rename probe 3 from HA |
+| Probe 4 Name | Text | Rename probe 4 from HA |
+| Probe 1 Cook Preset | Text | Cook preset label for probe 1 |
+| Probe 2 Cook Preset | Text | Cook preset label for probe 2 |
+| Probe 3 Cook Preset | Text | Cook preset label for probe 3 |
+| Probe 4 Cook Preset | Text | Cook preset label for probe 4 |
+
 ### Temperature Units
 
 All probe temperatures are stored internally in **Celsius** (as returned by the API). You can change the display unit per entity in Home Assistant under **Settings → Devices & Services → Napoleon Grill → [entity] → Unit of Measurement**. This allows you to display cooking probes in Fahrenheit while keeping ambient sensors in Celsius.
@@ -123,9 +145,12 @@ If you use Pi-hole, AdGuard, or similar DNS filtering, add `ads-field.aylanetwor
 
 ## Roadmap
 
-- [ ] LED brightness select entity (High / Medium / Low)
-- [ ] Target temperature sensors per probe
-- [ ] Probe name diagnostic sensors
+- [x] LED brightness select entity (High / Medium / Low) — v0.2.0
+- [x] Target temperature numbers per probe — v0.2.0
+- [x] Probe name text entities — v0.2.0
+- [x] Cook preset name text entities — v0.2.0
+- [ ] Temperature alerts per probe
+- [ ] Timer alerts per probe
 - [ ] Reauth flow
 - [ ] Default App ID and App Secret (pending community validation)
 
