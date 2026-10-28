@@ -1,0 +1,93 @@
+name: Release
+
+# Publishes a new version when a pull request labelled release:patch,
+# release:minor or release:major is merged into main. A PR with none of those
+# labels does not release anything. It can also be started by hand from the
+# Actions tab ("Run workflow").
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Which part of the version to increase
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+
+# Only one release at a time; never cancel one that is half done.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # push the version bump, the tag and the release
+  pull-requests: read # find the pull request that produced this commit
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    name: Bump version and publish release
+    # Manual runs from a branch other than main would bump the wrong code.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether to release
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          INPUT_BUMP: ${{ inputs.bump }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            bump="$INPUT_BUMP"
+          else
+            # Labels on whichever pull request(s) this commit came from.
+            labels="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '.[].labels[].name')"
+            echo "PR labels: ${labels:-<none>}"
+            bump="$(printf '%s\n' "$labels" | python3 .github/scripts/release_tools.py pick-bump)"
+          fi
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+          if [ -z "$bump" ]; then
+            echo "No release label on the merged pull request, so no release." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Bump manifest, tag and publish
+        if: steps.decide.outputs.bump != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUMP: ${{ steps.decide.outputs.bump }}
+        run: |
+          version="$(python3 .github/scripts/release_tools.py bump "$BUMP")"
+          tag="v$version"
+
+          if git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
+            echo "::error::Tag $tag already exists. Fix manifest.json or delete the tag first."
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add custom_components/napoleon_grill/manifest.json
+          git commit -m "Bump version to $version"
+
+          # If main moved on while this ran, this push is rejected and nothing
+          # is released. Re-run the workflow (Run workflow) to try again.
+          git push origin HEAD:main
+
+          git tag "$tag"
+          git push origin "$tag"
+          gh release create "$tag" --verify-tag --title "$tag" --generate-notes
+
+          echo "Released $tag ($BUMP bump)." | tee -a "$GITHUB_STEP_SUMMARY"
