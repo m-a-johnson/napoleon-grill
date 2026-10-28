@@ -182,6 +182,20 @@ Pull requests are welcome. If you have a Napoleon Connected grill model other th
 
 ---
 
+## Releasing
+
+Releases are published by `.github/workflows/release.yml`. Before merging a pull request, add one of these labels to it:
+
+| Label | Version change | Example |
+|-------|----------------|---------|
+| `release:patch` | bug fixes | 0.3.1 → 0.3.2 |
+| `release:minor` | new features | 0.3.1 → 0.4.0 |
+| `release:major` | breaking changes | 0.3.1 → 1.0.0 |
+
+When that pull request is merged into `main`, the workflow bumps `version` in `manifest.json`, commits it, tags it (`vX.Y.Z`) and publishes a GitHub release with generated notes. A pull request with no `release:` label (docs, CI, etc.) does not release anything. A release can also be started by hand from **Actions → Release → Run workflow**.
+
+---
+
 ## License
 
 MIT
