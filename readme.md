@@ -127,6 +127,14 @@ If you use Pi-hole, AdGuard, or similar DNS filtering, add `ads-field.aylanetwor
 
 ---
 
+## Diagnostics
+
+To help troubleshoot a problem (or to see every property your grill reports), go to **Settings → Devices & Services → Napoleon Grill**, open the three-dot menu on the integration (or the device page) and choose **Download diagnostics**.
+
+The report lists every property the Ayla API returns for each grill, including its type, whether it is writable, its current value and when it was last updated, plus when the login token expires. Your email, password, App ID, App Secret and the grill's serial number are redacted, and property values that look like network or credential data (SSID, MAC, IP and similar) are redacted on a best-effort basis. Skim the file before posting it publicly.
+
+---
+
 ## Known Limitations
 
 - This integration uses cloud polling and requires internet access
